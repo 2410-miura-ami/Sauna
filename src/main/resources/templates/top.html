@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="UTF-8">
+  <link th:href="@{/css/style.css}" rel="styleSheet">
   <title>TOP</title>
 </head>
 <body>
@@ -13,18 +14,18 @@
   <div class="tasks-icon" th:each="task : ${tasks}">
     <div>
       <span th:text="${task.content}"/>
-      <div th:switch=”${task.status}”>　
-      　<p th:case=”1” th:text=”未着手”></p>　
-      　<p th:case=”2” th:text=”実行中”></p>　
-      　<p th:case=”3” th:text=”ステイ中”></p>　
-      　<p th:case=”4” th:text=”完了”></p>　
-    </div>
-    <span th:text="${task.limitDate}"/>
-    <span class="delete-button">
-	    <form th:method="delete" th:action="@{/delete/{id}(id=${task.id})}" >
-	      <input type="submit" value="削除" />
-	    </form>
-    </span>
+      <select name="status">
+        <option value="1" th:selected="${task.status == 1}">未着手</option>
+        <option value="2" th:selected="${task.status == 2}">着手</option>
+        <option value="3" th:selected="${task.status == 3}">ステイ中</option>
+        <option value="4" th:selected="${task.status == 4}">完了</option>
+      </select>
+      <span th:text="${task.limitDate}"/>
+      <div class="delete-button">
+        <form th:method="delete" th:action="@{/delete/{id}(id=${task.id})}" >
+            <input type="submit" value="削除" />
+        </form>
+      </div>
     </div>
   </div>
 </div>
