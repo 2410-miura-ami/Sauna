@@ -4,10 +4,12 @@ import com.example.sauna.controller.form.TasksForm;
 import com.example.sauna.repository.TasksRepository;
 import com.example.sauna.repository.entity.Tasks;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class TasksService {
     @Autowired
     TasksRepository tasksRepository;
