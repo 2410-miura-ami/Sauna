@@ -20,7 +20,7 @@ public class Tasks {
     private String content;
 
     @Column
-    private int status;
+    private Integer status;
 
     @Column
     @Temporal(TemporalType.TIMESTAMP)

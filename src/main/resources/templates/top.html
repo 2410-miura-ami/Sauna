@@ -2,12 +2,26 @@
 <html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="UTF-8">
-  <link th:href="@{/style.css}" rel="styleSheet">
+  <link th:href="@{/css/style.css}" rel="styleSheet">
   <title>TOP</title>
 </head>
 <body>
 <div class="header-contents">
   <h1>TODOリスト</h1>
+</div>
+<div class="filter">
+  <form th:method="get">
+    期限<input type="date" name="startDate" th:value="${startDate}" />～<input type="date" name="endDate" th:value="${endDate}" />　
+    <select name="status">
+      <option value="" th:selected="${currentStatus == null}">　</option>
+      <option value="1" th:selected="${currentStatus == 1}">未着手</option>
+      <option value="2" th:selected="${currentStatus == 2}">実行中</option>
+      <option value="3" th:selected="${currentStatus == 3}">ステイ中</option>
+      <option value="4" th:selected="${currentStatus == 4}">完了</option>
+    </select>
+    タスク内容<input type="text" name="content" th:value="${content}">
+    <input type="submit" value="絞込" />
+  </form>
 </div>
 <div class="main-contents">
   タスク内容　ステータス　タスク期限</br>
@@ -26,6 +40,11 @@
       <span th:if="${task.limitDate < #dates.createNow()}">
         <span class="over-due" th:text="${#dates.format(task.limitDate, 'yyyy-MM-dd')}"></span>
       </span>
+      <div class="delete-button">
+        <form th:method="delete" th:action="@{/delete/{id}(id=${task.id})}" >
+            <input type="submit" value="削除" />
+        </form>
+      </div>
     </div>
   </div>
 </div>

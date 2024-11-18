@@ -1,0 +1,32 @@
+body {
+	background-color: #E0FFFF;
+}
+
+.header-contents {
+	margin-left: 20px;
+}
+
+.main-contents {
+	margin: 20px;
+	padding: 10px 10px 5px 10px;
+	background-color: #B4CCCC;
+	height: 100%;
+	width: 80%;
+}
+
+.safe-due {
+    color: yellow;
+}
+
+.over-due {
+    color: red;
+}
+
+.delete-button{
+    display:inline-block;
+}
+
+.footer-contents {
+	margin-left: 20px;
+}
+
