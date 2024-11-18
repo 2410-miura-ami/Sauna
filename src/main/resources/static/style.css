@@ -14,6 +14,14 @@ body {
 	width: 80%;
 }
 
+.safe-due {
+    color: yellow;
+}
+
+.over-due {
+    color: red;
+}
+
 .footer-contents {
 	margin-left: 20px;
 }
