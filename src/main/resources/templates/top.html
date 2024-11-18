@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <link th:href="@{/css/style.css}" rel="styleSheet">
+  <title>TOP</title>
+</head>
+<body>
+<div class="header-contents">
+  <h1>TODOリスト</h1>
+</div>
+<div class="main-contents">
+  タスク内容　ステータス　タスク期限</br>
+  <div class="tasks-icon" th:each="task : ${tasks}">
+    <div>
+      ID : <span th:text="${task.id}"/> 投稿 : <span th:text="${content.content}"/> 期限：
+    </div>
+  </div>
+</div>
+</body>
+</html>
