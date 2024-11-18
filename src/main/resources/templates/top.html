@@ -14,6 +14,11 @@
   <div class="tasks-icon" th:each="task : ${tasks}">
     <div>
       ID : <span th:text="${task.id}"/> 投稿 : <span th:text="${content.content}"/> 期限：
+      <span class="delete-button">
+	    <form th:method="delete" th:action="@{/delete/{id}(id=${task.id})}" >
+	      <input type="submit" value="削除" />
+	    </form>
+      </span>
     </div>
   </div>
 </div>
