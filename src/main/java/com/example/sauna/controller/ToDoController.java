@@ -18,7 +18,7 @@ public class ToDoController {
     TasksService tasksService;
 
     /*
-     * 投稿内容表示処理
+     * タスク表示処理
      */
     @GetMapping
     public ModelAndView top(@RequestParam(name = "startDate",  required = false)String startDate, @RequestParam(name = "endDate", required = false)String endDate, @RequestParam(name = "status",  required = false)Integer status, @RequestParam(name = "content",  required = false)String content) {
