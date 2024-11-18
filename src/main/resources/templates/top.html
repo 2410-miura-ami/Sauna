@@ -2,7 +2,6 @@
 <html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="UTF-8">
-  <link th:href="@{/css/style.css}" rel="styleSheet">
   <title>TOP</title>
 </head>
 <body>
@@ -13,7 +12,14 @@
   タスク内容　ステータス　タスク期限</br>
   <div class="tasks-icon" th:each="task : ${tasks}">
     <div>
-      ID : <span th:text="${task.id}"/> 投稿 : <span th:text="${content.content}"/> 期限：
+      <span th:text="${task.content}"/>
+      <div th:switch=”${task.status}”>　
+      　<p th:case=”1” th:text=”未着手”></p>　
+      　<p th:case=”2” th:text=”実行中”></p>　
+      　<p th:case=”3” th:text=”ステイ中”></p>　
+      　<p th:case=”4” th:text=”完了”></p>　
+    </div>
+    <span th:text="${task.limitDate}"/>
     </div>
   </div>
 </div>
