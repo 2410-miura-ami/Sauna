@@ -11,7 +11,7 @@ import java.util.Date;
 public class TasksForm {
     private int id;
     private String content;
-    private int status;
+    private Integer status;
     private Date limitDate;
     private Date createdDate;
     private Date updatedDate;

@@ -9,16 +9,30 @@
 <div class="header-contents">
   <h1>TODOリスト</h1>
 </div>
+<div class="filter">
+  <form th:method="get">
+    期限<input type="date" name="startDate" th:value="${startDate}" />～<input type="date" name="endDate" th:value="${endDate}" />　
+    <select name="status">
+      <option value="" th:selected="${currentStatus == null}">　</option>
+      <option value="1" th:selected="${currentStatus == 1}">未着手</option>
+      <option value="2" th:selected="${currentStatus == 2}">実行中</option>
+      <option value="3" th:selected="${currentStatus == 3}">ステイ中</option>
+      <option value="4" th:selected="${currentStatus == 4}">完了</option>
+    </select>
+    タスク内容<input type="text" name="content" th:value="${content}">
+    <input type="submit" value="絞込" />
+  </form>
+</div>
 <div class="main-contents">
   タスク内容　ステータス　タスク期限</br>
   <div class="tasks-icon" th:each="task : ${tasks}">
     <div>
       <span th:text="${task.content}"/>
       <select name="status">
-        <option value="1" th:selected="${task.status == '1'}">未着手</option>
-        <option value="2" th:selected="${task.status == '2'}">着手</option>
-        <option value="3" th:selected="${task.status == '3'}">ステイ中</option>
-        <option value="4" th:selected="${task.status == '4'}">完了</option>
+        <option value="1" th:selected="${task.status == 1}">未着手</option>
+        <option value="2" th:selected="${task.status == 2}">着手</option>
+        <option value="3" th:selected="${task.status == 3}">ステイ中</option>
+        <option value="4" th:selected="${task.status == 4}">完了</option>
       </select>
       <span th:text="${task.limitDate}"/>
     </div>
