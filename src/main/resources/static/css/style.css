@@ -18,3 +18,10 @@ body {
 	margin-left: 20px;
 }
 
+.delete-button{
+    display:inline-block;
+}
+
+.edit-button{
+    display:inline-block;
+}
