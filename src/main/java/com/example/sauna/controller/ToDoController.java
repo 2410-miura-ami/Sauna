@@ -7,12 +7,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
 @Controller
 public class ToDoController {
-    @Autowired TasksService tasksService;
+    @Autowired
+    TasksService tasksService;
 
     /*
      * 投稿内容表示処理
@@ -33,5 +36,18 @@ public class ToDoController {
         mav.addObject("content", content);
 
         return mav;
+    }
+
+    /*
+     * タスク削除処理
+     */
+    @DeleteMapping("/delete/{id}")
+    public ModelAndView deleteContent(@PathVariable Integer id) {
+
+        //タスクを削除する
+        tasksService.deleteTasks(id);
+
+        //投稿をテーブルから削除した後、トップ画面へ戻る
+        return new ModelAndView("redirect:/");
     }
 }

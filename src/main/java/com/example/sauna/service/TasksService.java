@@ -83,4 +83,10 @@ public class TasksService {
         return tasks;
     }
 
+    /*
+     * レコード削除
+     */
+    public void deleteTasks(Integer id) {
+        tasksRepository.deleteById(id);
+    }
 }
