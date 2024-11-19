@@ -89,4 +89,16 @@ public class TasksService {
     public void deleteTasks(Integer id) {
         tasksRepository.deleteById(id);
     }
+
+    /*
+     * 編集画面表示のため、レコード参照
+     */
+    public TasksForm editTasks(Integer id) {
+        List<Tasks> results = new ArrayList<>();
+        results.add((Tasks)tasksRepository.findById(id).orElse(null));
+        //DBから取得した値をsetTasksFormメソッドでEntity→Formに詰め直して、Controllerに戻す
+        List<TasksForm> tasks = setTasksForm(results);
+        return tasks.get(0);
+    }
+
 }

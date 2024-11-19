@@ -30,10 +30,20 @@ body {
 	margin-left: 20px;
 }
 
+.tweet-box {
+    margin: 5px 0px;
+	width: 780px;
+	height: 56px;
+}
+
 .delete-button{
     display:inline-block;
 }
 
 .edit-button{
     display:inline-block;
+}
+
+.edit-item{
+    display:block;
 }

@@ -50,4 +50,20 @@ public class ToDoController {
         //投稿をテーブルから削除した後、トップ画面へ戻る
         return new ModelAndView("redirect:/");
     }
+
+    /*
+     * タスク編集画面初期表示
+     */
+    @GetMapping("/edit/{id}")
+    public ModelAndView editContent(@PathVariable Integer id) {
+        ModelAndView mav = new ModelAndView();
+        //編集するタスクを取得
+        TasksForm tasksForm = tasksService.editTasks(id);
+        //編集する投稿を保管
+        mav.addObject("editTasksForm", tasksForm);
+        //画面遷移先を指定(edit.html)
+        mav.setViewName("/edit");
+
+        return mav;
+    }
 }

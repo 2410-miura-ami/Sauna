@@ -43,6 +43,13 @@
       <span th:if="${task.limitDate < #dates.createNow()}">
         <span class="over-due" th:text="${#dates.format(task.limitDate, 'yyyy-MM-dd')}"></span>
       </span>
+
+      <div class="edit-button">
+        <form th:method="get" th:action="@{/edit/{id}(id=${task.id})}" >
+          <input type="submit" value="編集" />
+        </form>
+      </div>
+
       <div class="delete-button">
         <form th:method="delete" th:action="@{/delete/{id}(id=${task.id})}" >
             <input type="submit" value="削除" id="delete" />
