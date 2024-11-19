@@ -4,11 +4,8 @@ import com.example.sauna.controller.form.TasksForm;
 import com.example.sauna.service.TasksService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -66,4 +63,39 @@ public class ToDoController {
 
         return mav;
     }
+
+    /*
+     * タスク編集処理
+     */
+    @PutMapping("/update/{id}")
+    public ModelAndView updateContent(@PathVariable Integer id, @ModelAttribute("editTasksForm") TasksForm tasksForm) {
+        //バリデーション
+        //List<String> errorMessages = new ArrayList<String>();
+
+        /*
+        if (bindingResult.hasErrors()) {
+            //エラーがあったら、エラーメッセージを格納する
+            //BindingResultのgetFieldErrors()により、(フィールド名と)エラーメッセージを取得できます
+            for (FieldError error : bindingResult.getFieldErrors()){
+                String message = error.getDefaultMessage();
+                //取得したエラーメッセージをエラーメッセージのリストに格納
+                errorMessages.add(message);
+            }
+
+            // セッションに保存（リダイレクトしても値を保存できるようにするため）
+            session.setAttribute("errorMessages", errorMessages);
+
+            //編集画面に遷移
+            return new ModelAndView("redirect:/edit/{id}");
+        }
+        */
+
+        // タスクを更新するためTasksServiceのsaveTasksを実行
+        tasksForm.setId(id);
+        tasksService.saveTasks(tasksForm);
+        // その後、rootディレクトリ、つまり、⑤サーバー側：投稿内容表示機能の処理へリダイレクト
+        //投稿をテーブルに格納した後、その投稿を表示させてトップ画面へ戻るという仕様
+        return new ModelAndView("redirect:/");
+    }
+
 }

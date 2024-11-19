@@ -101,4 +101,23 @@ public class TasksService {
         return tasks.get(0);
     }
 
+    /*
+     * レコード追加or編集（タスク追加・投稿編集）
+     */
+    public void saveTasks(TasksForm reqTasks) {
+        Tasks saveTasks = setTasksEntity(reqTasks);
+        tasksRepository.save(saveTasks);
+    }
+
+    /*
+     * 取得した情報をEntityに設定
+     */
+    private Tasks setTasksEntity(TasksForm reqTasks) {
+        Tasks task = new Tasks();
+        task.setId(reqTasks.getId());
+        task.setContent(reqTasks.getContent());
+        task.setStatus(reqTasks.getStatus());
+        task.setLimitDate(reqTasks.getLimitDate());
+        return task;
+    }
 }
