@@ -102,11 +102,6 @@ public class TasksService {
         }
 
         List<TasksForm> tasks = setTasksForm(results);
-        /*if (tasks.isEmpty()) {
-            return null;
-        } else {
-            return tasks.get(0);
-        }*/
         return tasks.get(0);
     }
 
