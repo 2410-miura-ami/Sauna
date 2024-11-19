@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <link th:href="@{/css/style.css}" rel="styleSheet">
+  <script th:src="@{/js/jquery-3.7.1.js}"></script>
+  <script th:src="@{/js/jquery-3.7.1.min.js}"></script>
+  <script th:src="@{/js/delete.js}"></script>
   <title>TOP</title>
 </head>
 <body>
@@ -34,10 +37,15 @@
         <option value="3" th:selected="${task.status == 3}">ステイ中</option>
         <option value="4" th:selected="${task.status == 4}">完了</option>
       </select>
-      <span th:text="${task.limitDate}"/>
+      <span th:if="${task.limitDate > #dates.createNow()}">
+        <span class="safe-due" th:text="${#dates.format(task.limitDate, 'yyyy-MM-dd')}"></span>
+      </span>
+      <span th:if="${task.limitDate < #dates.createNow()}">
+        <span class="over-due" th:text="${#dates.format(task.limitDate, 'yyyy-MM-dd')}"></span>
+      </span>
       <div class="delete-button">
         <form th:method="delete" th:action="@{/delete/{id}(id=${task.id})}" >
-            <input type="submit" value="削除" />
+            <input type="submit" value="削除" id="delete" />
         </form>
       </div>
     </div>

@@ -14,7 +14,26 @@ body {
 	width: 80%;
 }
 
+.safe-due {
+    color: yellow;
+}
+
+.over-due {
+    color: red;
+}
+
+.delete-button{
+    display:inline-block;
+}
+
 .footer-contents {
 	margin-left: 20px;
 }
 
+.delete-button{
+    display:inline-block;
+}
+
+.edit-button{
+    display:inline-block;
+}
