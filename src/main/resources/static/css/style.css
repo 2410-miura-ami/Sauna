@@ -14,6 +14,10 @@ body {
 	width: 80%;
 }
 
+.status-icon{
+    display:inline-block;
+}
+
 .safe-due {
     color: yellow;
 }

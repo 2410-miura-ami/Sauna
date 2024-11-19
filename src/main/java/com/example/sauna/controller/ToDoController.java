@@ -4,11 +4,8 @@ import com.example.sauna.controller.form.TasksForm;
 import com.example.sauna.service.TasksService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -48,6 +45,15 @@ public class ToDoController {
         tasksService.deleteTasks(id);
 
         //投稿をテーブルから削除した後、トップ画面へ戻る
+        return new ModelAndView("redirect:/");
+    }
+
+    /*
+     * ステータス変更処理
+     */
+    @PostMapping("/editStatus/{id}")
+    public ModelAndView editStatus(@PathVariable Integer id, @RequestParam(name="status") Integer status) {
+        tasksService.editStatus(status, id);
         return new ModelAndView("redirect:/");
     }
 }
