@@ -32,7 +32,7 @@
 <div class="main-contents">
   タスク内容　ステータス　タスク期限</br>
   <div class="tasks-icon" th:each="task : ${tasks}">
-      <span th:text="${task.content}"/>
+      <div th:text="${task.content}"></div>
       <div class="status-icon">
         <form th:action="@{/editStatus/{id}(id=${task.id})}" th:method="post">
           <select name="status">
