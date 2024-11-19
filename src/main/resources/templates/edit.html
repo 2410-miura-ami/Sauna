@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <link th:href="@{/css/style.css}" rel="styleSheet">
+  <title>タスク編集</title>
+</head>
+<body>
+<div class="header-contents">
+  <h2>タスク編集</h2>
+</div>
+<div class="main-contents">
+  <form th:method="put" th:action="@{/update/{id}(id=${editTasksForm.id})}" th:object="${editTasksForm}">
+    <div class="errorMessages" th:each="errorMessage : ${errorMessages}">
+      <p th:text="${errorMessage}"></p>
+    </div>
+
+    <div class="form-area">
+      <label class="edit-item">タスク編集</label>
+      <textarea class="tweet-box" th:field="*{content}" size="20" maxlength="200" /></textarea><br/>
+      <label class="edit-item">タスク期限</label>
+      <!--<span th:text="*{limitDate}"/>-->
+      <input type="text" th:field="*{limitDate}" /><br/>
+      <input type="submit" value="編集" />
+      <!--一つ目のform属性の投稿ボタンを押すと、「th:field="*{content}"」がサーバー側に渡されてDBにinsertされていくような流れとなりますね。
+      編集画面に遷移した際に、値が保持されるべきですので、textarea 要素内に「th:field="*{content}"」 と記載して値の保持を行います。
+       -->
+    </div>
+  </form>
+</div>
+<div class="footer-contents">
+  <form action="/">
+    <input type="submit" value="戻る" />
+  </form>
+</div>
+</body>
+</html>
