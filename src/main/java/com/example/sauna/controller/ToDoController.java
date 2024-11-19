@@ -3,17 +3,18 @@ package com.example.sauna.controller;
 import com.example.sauna.controller.form.TasksForm;
 import com.example.sauna.service.TasksService;
 
-import io.micrometer.common.util.StringUtils;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -105,15 +106,15 @@ public class ToDoController {
      * タスク編集画面初期表示
      */
     @GetMapping("/edit/{id}")
-    public ModelAndView editContent(@PathVariable String id) {
+    public ModelAndView editContent(@PathVariable String id, RedirectAttributes redirectAttributes) {
         ModelAndView mav = new ModelAndView();
         //IDのnull,数字チェック
-        List<String> errorMessages = new ArrayList<String>();
+        List<String> errorMessageId = new ArrayList<String>();
         //IDのnull,数字チェック
-        if(!id.matches("^[0-9]+$") || (StringUtils.isBlank(id))) {
-            errorMessages.add("不正なパラメータです");
+        if(!id.matches("^[0-9]+$") || (!StringUtils.hasText(id))) {
+            errorMessageId.add("不正なパラメータです");
             //エラーメッセージを格納して、top画面へ遷移
-            mav.addObject("errorMessages", errorMessages);
+            redirectAttributes.addFlashAttribute("errorMessages", errorMessageId);
             //top画面にリダイレクト
             return new ModelAndView("redirect:/");
         }
@@ -123,6 +124,24 @@ public class ToDoController {
 
         //編集するタスクを取得
         TasksForm tasksForm = tasksService.editTasks(taskId);
+
+        //Idの存在チェック
+        if(tasksForm == null) {
+            errorMessageId.add("不正なパラメータです");
+            //エラーメッセージを格納して、トップ画面へ遷移
+            redirectAttributes.addFlashAttribute("errorMessages", errorMessageId);
+            //top画面にリダイレクト
+            return new ModelAndView("redirect:/");
+        }
+
+        //編集時にsessionに格納したエラーメッセージを取得
+        List<String> errorMessages = (List<String>) session.getAttribute("errorMessages");
+        //「エラーメッセージが空じゃなければ、エラーメッセージをセットする。」mav.addObjectすることで画面表示の準備できる
+        if((errorMessages != null) && (!errorMessages.isEmpty())) {
+            mav.addObject("errorMessages", errorMessages);
+        }
+        //エラーメッセージが常に出てきてしまうので、格納後にセッションを破棄する
+        session.invalidate();
 
         //編集する投稿を保管
         mav.addObject("editTasksForm", tasksForm);
@@ -136,15 +155,22 @@ public class ToDoController {
      * タスク編集処理
      */
     @PutMapping("/update/{id}")
-    public ModelAndView updateContent(@PathVariable Integer id, @ModelAttribute("editTasksForm") TasksForm tasksForm) {
-        //バリデーション
-        //List<String> errorMessages = new ArrayList<String>();
-
+    public ModelAndView updateContent(@PathVariable Integer id, @ModelAttribute("editTasksForm") @Validated TasksForm tasksForm, BindingResult result) {
+        //エラーチェック
         /*
-        if (bindingResult.hasErrors()) {
+        if(result.hasErrors()){
+            ModelAndView modelAndView = new ModelAndView("/edit");
+            return modelAndView;
+        }
+        */
+
+        //バリデーション
+        List<String> errorMessages = new ArrayList<String>();
+
+        if (result.hasErrors()) {
             //エラーがあったら、エラーメッセージを格納する
-            //BindingResultのgetFieldErrors()により、(フィールド名と)エラーメッセージを取得できます
-            for (FieldError error : bindingResult.getFieldErrors()){
+            //BindingResultのgetFieldErrors()により、エラーメッセージの取得
+            for (FieldError error : result.getFieldErrors()){
                 String message = error.getDefaultMessage();
                 //取得したエラーメッセージをエラーメッセージのリストに格納
                 errorMessages.add(message);
@@ -156,12 +182,6 @@ public class ToDoController {
             //編集画面に遷移
             return new ModelAndView("redirect:/edit/{id}");
         }
-        */
-
-        //タスク期限をDate型へ変換
-        //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        //String currentTime = sdf.parse(tasksForm.getLimitDate());
-
 
         // タスクを更新するためTasksServiceのsaveTasksを実行
         tasksForm.setId(id);
@@ -170,8 +190,7 @@ public class ToDoController {
 
         tasksForm.setStatus(tasksForm1.getStatus());
         tasksService.saveTasks(tasksForm);
-        // その後、rootディレクトリ、つまり、⑤サーバー側：投稿内容表示機能の処理へリダイレクト
-        //投稿をテーブルに格納した後、その投稿を表示させてトップ画面へ戻るという仕様
+        //トップ画面へ戻る
         return new ModelAndView("redirect:/");
     }
 

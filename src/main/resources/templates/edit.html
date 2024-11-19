@@ -14,6 +14,7 @@
     <div class="errorMessages" th:each="errorMessage : ${errorMessages}">
       <p th:text="${errorMessage}"></p>
     </div>
+
     <div class="form-area">
       <label class="edit-item">タスク編集</label>
       <textarea class="tweet-box" th:field="*{content}" size="20" maxlength="200" /></textarea><br/>

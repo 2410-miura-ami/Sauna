@@ -53,6 +53,7 @@
       <div class="edit-button">
         <form th:method="get" th:action="@{/edit/{id}(id=${task.id})}" >
           <input type="submit" value="編集" />
+          <!--<input name="editId" value="${task.id}"  type="hidden" />-->
         </form>
       </div>
 
