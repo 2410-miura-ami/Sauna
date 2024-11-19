@@ -4,11 +4,10 @@ import com.example.sauna.controller.form.TasksForm;
 import com.example.sauna.service.TasksService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -48,6 +47,39 @@ public class ToDoController {
         tasksService.deleteTasks(id);
 
         //投稿をテーブルから削除した後、トップ画面へ戻る
+        return new ModelAndView("redirect:/");
+    }
+
+    /*
+     * 新規投稿画面表示
+     */
+    @GetMapping("/new")
+    public ModelAndView newTasks() {
+        ModelAndView mav = new ModelAndView();
+        // 空のformを準備
+        TasksForm tasksForm = new TasksForm();
+        // 画面遷移先を指定
+        mav.setViewName("/new");
+        // 準備した空のFormを保管
+        mav.addObject("formModel", tasksForm);
+        return mav;
+    }
+
+    /*
+     * 新規投稿処理
+     */
+    @PostMapping("/add")
+    public ModelAndView addTasks(@ModelAttribute("formModel") @Validated TasksForm tasksForm, BindingResult result){
+        //エラーチェック
+        if(result.hasErrors()){
+            ModelAndView modelAndView = new ModelAndView("/new");
+            return modelAndView;
+        }
+        //Formにステータスのデフォルト値「１」をセット
+        tasksForm.setStatus(1);
+        // 投稿をテーブルに格納
+        tasksService.saveTasks(tasksForm);
+        // rootへリダイレクト
         return new ModelAndView("redirect:/");
     }
 }

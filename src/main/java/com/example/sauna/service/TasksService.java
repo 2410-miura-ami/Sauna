@@ -102,11 +102,11 @@ public class TasksService {
      * 取得した情報をEntityに設定
      */
     private Tasks setTasksEntity(TasksForm reqTasks) {
-        Tasks report = new Tasks();
-        report.setId(reqTasks.getId());
-        report.setContent(reqTasks.getContent());
-        report.setStatus(reqTasks.getStatus());
-        report.setLimitDate(reqTasks.getLimitDate());
-        return report;
+        Tasks task = new Tasks();
+        task.setId(reqTasks.getId());
+        task.setContent(reqTasks.getContent());
+        task.setStatus(reqTasks.getStatus());
+        task.setLimitDate(reqTasks.getLimitDate());
+        return task;
     }
 }
