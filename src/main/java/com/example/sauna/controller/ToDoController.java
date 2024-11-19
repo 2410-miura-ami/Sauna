@@ -11,11 +11,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -61,7 +56,16 @@ public class ToDoController {
     }
 
     /*
-     * タスク追加画面表示
+     * ステータス変更処理
+     */
+    @PostMapping("/editStatus/{id}")
+    public ModelAndView editStatus(@PathVariable Integer id, @RequestParam(name="status") Integer status) {
+        tasksService.editStatus(status, id);
+        return new ModelAndView("redirect:/");
+    }
+
+    /*
+     * 新規投稿画面表示
      */
     @GetMapping("/new")
     public ModelAndView newTasks() {
@@ -108,27 +112,6 @@ public class ToDoController {
             model.addAttribute("errorMessages", errorMessages);
             return new ModelAndView("/new");
         }
-
-        /*// エラーチェック
-        if (result.hasErrors()) {
-            //タスク期限が今日以降であるかどうかのチェック（昨日以前である場合はエラーメッセージをセット）
-            if (limitDate != null && limitDate.compareTo(today) < 0) {
-                // エラーメッセージを設定
-                List<String> errorMessages = new ArrayList<>();
-                errorMessages.add("無効な日付です");
-                model.addAttribute("errorMessages", errorMessages);
-            }
-            return new ModelAndView("/new");
-        }
-        //タスク期限が今日以降であるかどうかのチェック（昨日以前である場合はエラーメッセージをセット）
-        if (limitDate != null && limitDate.compareTo(today) < 0) {
-            // エラーメッセージを設定
-            List<String> errorMessages = new ArrayList<>();
-            errorMessages.add("無効な日付です");
-            // フラッシュ属性としてエラーメッセージを設定
-            model.addAttribute("errorMessages", errorMessages);
-            return new ModelAndView("/new");
-        }*/
 
         //Formにステータスのデフォルト値「１」をセット
         tasksForm.setStatus(1);
