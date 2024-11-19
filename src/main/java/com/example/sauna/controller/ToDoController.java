@@ -114,13 +114,14 @@ public class ToDoController {
     /*
      * タスク編集画面初期表示
      */
-    @GetMapping("/edit/{id}")
-    public ModelAndView editContent(@PathVariable String id, RedirectAttributes redirectAttributes) {
+    //@GetMapping("/edit")
+    @GetMapping("/edit")
+    public ModelAndView editContent(@RequestParam(name = "editId", required=false) String id, RedirectAttributes redirectAttributes) {
         ModelAndView mav = new ModelAndView();
         //IDのnull,数字チェック
         List<String> errorMessageId = new ArrayList<String>();
         //IDのnull,数字チェック
-        if(!id.matches("^[0-9]+$") || (!StringUtils.hasText(id))) {
+        if((id == null) || (!id.matches("^[0-9]+$"))) {
             errorMessageId.add("不正なパラメータです");
             //エラーメッセージを格納して、top画面へ遷移
             redirectAttributes.addFlashAttribute("errorMessages", errorMessageId);
