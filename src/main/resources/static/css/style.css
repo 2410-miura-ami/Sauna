@@ -13,6 +13,9 @@ body {
 	height: 100%;
 	width: 80%;
 }
+.errorMessages {
+    color: red;
+}
 
 .main-contents div{
     display:inline-block;
@@ -39,10 +42,20 @@ body {
 	margin-left: 20px;
 }
 
+.tweet-box {
+    margin: 5px 0px;
+	width: 780px;
+	height: 56px;
+}
+
 .delete-button{
     display:inline-block;
 }
 
 .edit-button{
     display:inline-block;
+}
+
+.edit-item{
+    display:block;
 }

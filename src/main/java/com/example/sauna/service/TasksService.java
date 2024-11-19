@@ -91,6 +91,26 @@ public class TasksService {
     }
 
     /*
+     * 編集画面表示のため、レコード参照
+     */
+    public TasksForm editTasks(Integer id) {
+        List<Tasks> results = new ArrayList<>();
+        results.add((Tasks)tasksRepository.findById(id).orElse(null));
+        //DBから取得した値をsetTasksFormメソッドでEntity→Formに詰め直して、Controllerに戻す
+        if (results.isEmpty()) {
+            return null;
+        }
+
+        List<TasksForm> tasks = setTasksForm(results);
+        /*if (tasks.isEmpty()) {
+            return null;
+        } else {
+            return tasks.get(0);
+        }*/
+        return tasks.get(0);
+    }
+
+    /*
      * レコード追加or編集（タスク追加・投稿編集）
      */
     public void saveTasks(TasksForm reqTasks) {

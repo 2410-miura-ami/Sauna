@@ -13,7 +13,11 @@
   <form method="post" action="/add" th:object="${formModel}">
     <div th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></div>
     <div th:if="${#fields.hasErrors('limitDate')}" th:errors="*{limitDate}"></div>
-
+    <div th:if="${not #lists.isEmpty(errorMessages)}">
+      <ul>
+        <li th:each="errorMessage : ${errorMessages}" th:text="${errorMessage}"></li>
+      </ul>
+    </div>
     <label>タスク内容</label><br/>
     <textarea class="content-box" th:field="*{content}" size="100" maxlength="200" /></textarea><br/>
     <label>タスク期限</label><br/>
