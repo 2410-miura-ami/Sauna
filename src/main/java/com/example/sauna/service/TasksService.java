@@ -89,4 +89,24 @@ public class TasksService {
     public void deleteTasks(Integer id) {
         tasksRepository.deleteById(id);
     }
+
+    /*
+     * レコード追加or編集（タスク追加・投稿編集）
+     */
+    public void saveTasks(TasksForm reqTasks) {
+        Tasks saveTasks = setTasksEntity(reqTasks);
+        tasksRepository.save(saveTasks);
+    }
+
+    /*
+     * 取得した情報をEntityに設定
+     */
+    private Tasks setTasksEntity(TasksForm reqTasks) {
+        Tasks report = new Tasks();
+        report.setId(reqTasks.getId());
+        report.setContent(reqTasks.getContent());
+        report.setStatus(reqTasks.getStatus());
+        report.setLimitDate(reqTasks.getLimitDate());
+        return report;
+    }
 }
