@@ -140,7 +140,6 @@ public class ToDoController {
     @GetMapping("/edit")
     public ModelAndView editContent(@RequestParam(name = "editId", required=false) String id, RedirectAttributes redirectAttributes) {
         ModelAndView mav = new ModelAndView();
-        //IDのnull,数字チェック
         List<String> errorMessageId = new ArrayList<String>();
         //IDのnull,数字チェック
         if((id == null) || (!id.matches("^[0-9]+$"))) {
