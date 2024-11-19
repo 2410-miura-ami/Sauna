@@ -17,21 +17,22 @@ body {
     color: red;
 }
 
-.main-contents div{
+.content-icon{
     display:inline-block;
-    padding-right: 3em;
+    padding-right: 6em;
 }
 
 .status-icon{
     display:inline-block;
+    padding-right: 2em;
 }
 
 .safe-due {
-    color: yellow;
+    background-color: yellow;
 }
 
 .over-due {
-    color: red;
+    background-color: red;
 }
 
 .delete-button{
