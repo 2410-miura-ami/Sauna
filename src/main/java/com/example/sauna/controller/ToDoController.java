@@ -136,8 +136,8 @@ public class ToDoController {
     /*
      * タスク編集画面初期表示
      */
-    @GetMapping("/edit/{id}")
-    public ModelAndView editContent(@PathVariable String id, RedirectAttributes redirectAttributes) {
+    @GetMapping("/edit")
+    public ModelAndView editContent(@RequestParam(name = task.id) String id, RedirectAttributes redirectAttributes) {
         ModelAndView mav = new ModelAndView();
         //IDのnull,数字チェック
         List<String> errorMessageId = new ArrayList<String>();
