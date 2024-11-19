@@ -107,8 +107,7 @@ public class ToDoController {
         Date limitDate = tasksForm.getLimitDate();
 
         //エラーメッセージの準備
-        List<String> errorMessages = new ArrayList<>();
-        errorMessages.add("無効な日付です");
+        String errorMessages = "・無効な日付です";
 
         //タスク内容にエラーがあり、タスク期限が昨日以前である場合
         if (result.hasErrors() && (limitDate != null && limitDate.compareTo(today) < 0)) {
@@ -137,7 +136,7 @@ public class ToDoController {
      * タスク編集画面初期表示
      */
     @GetMapping("/edit")
-    public ModelAndView editContent(@RequestParam(name = task.id) String id, RedirectAttributes redirectAttributes) {
+    public ModelAndView editContent(@PathVariable String id, RedirectAttributes redirectAttributes) {
         ModelAndView mav = new ModelAndView();
         //IDのnull,数字チェック
         List<String> errorMessageId = new ArrayList<String>();
