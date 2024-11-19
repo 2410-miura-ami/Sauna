@@ -26,7 +26,7 @@ public class Tasks {
     @Temporal(TemporalType.TIMESTAMP)
     private Date limitDate;
 
-    @Column
+    @Column(name = "created_date", insertable = true, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
 

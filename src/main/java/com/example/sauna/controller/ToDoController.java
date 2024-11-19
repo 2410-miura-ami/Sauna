@@ -9,6 +9,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -74,6 +77,12 @@ public class ToDoController {
         if(result.hasErrors()){
             ModelAndView modelAndView = new ModelAndView("/new");
             return modelAndView;
+        }
+        //タスク期限が今日以降であるかのチェック
+        Date date = new Date();
+        //現在日時と比較して過去の場合にture
+        if(tasksForm.getLimitDate().compareTo(date) < 0){
+
         }
         //Formにステータスのデフォルト値「１」をセット
         tasksForm.setStatus(1);
