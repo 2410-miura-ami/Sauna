@@ -118,6 +118,20 @@ public class TasksService {
         task.setContent(reqTasks.getContent());
         task.setStatus(reqTasks.getStatus());
         task.setLimitDate(reqTasks.getLimitDate());
+
+        Date nowDate = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String currentTime = sdf.format(nowDate);
+        try {
+            task.setUpdatedDate(sdf.parse(currentTime));
+            if (reqTasks.getCreatedDate() == null) {
+                task.setCreatedDate(sdf.parse(currentTime));
+            } else {
+                task.setCreatedDate(reqTasks.getCreatedDate());
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         return task;
     }
 }

@@ -12,6 +12,9 @@
 <div class="header-contents">
   <h1>TODOリスト</h1>
 </div>
+<div class="errorMessages" th:each="errorMessage : ${errorMessages}">
+  <p th:text="${errorMessage}"></p>
+</div>
 <div class="filter">
   <form th:method="get">
     期限<input type="date" name="startDate" th:value="${startDate}" />～<input type="date" name="endDate" th:value="${endDate}" />　

@@ -3,6 +3,7 @@ package com.example.sauna.repository.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -26,7 +27,7 @@ public class Tasks {
     @Temporal(TemporalType.TIMESTAMP)
     private Date limitDate;
 
-    @Column
+    @Column(name = "created_date", insertable = true, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
 
