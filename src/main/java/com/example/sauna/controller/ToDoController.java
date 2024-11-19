@@ -64,6 +64,15 @@ public class ToDoController {
     }
 
     /*
+     * ステータス変更処理
+     */
+    @PostMapping("/editStatus/{id}")
+    public ModelAndView editStatus(@PathVariable Integer id, @RequestParam(name="status") Integer status) {
+        tasksService.editStatus(status, id);
+        return new ModelAndView("redirect:/");
+    }
+
+    /*
      * 新規投稿画面表示
      */
     @GetMapping("/new")

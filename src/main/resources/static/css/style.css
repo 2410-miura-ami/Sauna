@@ -17,6 +17,10 @@ body {
     color: red;
 }
 
+.status-icon{
+    display:inline-block;
+}
+
 .safe-due {
     color: yellow;
 }

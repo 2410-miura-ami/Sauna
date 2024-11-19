@@ -143,4 +143,8 @@ public class TasksService {
         }
         return task;
     }
+    //ステータス変更処理
+    public void editStatus(Integer status, Integer id){
+        tasksRepository.editStatus(status, id);
+    }
 }
