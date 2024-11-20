@@ -122,7 +122,7 @@ public class ToDoController {
             // エラーメッセージをセット
             errorMessages.add("・無効な日付です");
         }
-        //何らかのエラーがある場合にエラーメッセージをViewに渡して、/newに遷移
+
         if(result.hasErrors() || !errorMessages.isEmpty()) {
             model.addAttribute("errorMessages", errorMessages);
             return new ModelAndView("/new");
@@ -139,11 +139,15 @@ public class ToDoController {
     /*
      * タスク編集画面初期表示
      */
-    @GetMapping("/edit/{id}")
-    public ModelAndView editContent(@PathVariable String id, RedirectAttributes redirectAttributes) {
+    @GetMapping("/edit")
+    public ModelAndView editContent(@RequestParam(name = "editId", required=false) String id, RedirectAttributes redirectAttributes) {
         ModelAndView mav = new ModelAndView();
         List<String> errorMessageId = new ArrayList<String>();
 
+        String editId = (String) session.getAttribute("editId");
+        if((editId != null) && (!editId.isEmpty())) {
+            id = editId;
+        }
         //IDのnull,数字チェック
         if((id == null) || (!id.matches("^[0-9]+$"))) {
             errorMessageId.add("不正なパラメータです");
@@ -168,19 +172,20 @@ public class ToDoController {
             return new ModelAndView("redirect:/");
         }
 
+        //編集する投稿を保管
         mav.addObject("editTasksForm", tasksForm);
 
         //編集時にsessionに格納したエラーメッセージを取得
         List<String> errorMessages = (List<String>) session.getAttribute("errorMessages");
-        //エラーメッセージの有無のチェック
+        TasksForm editContent = (TasksForm) session.getAttribute("editTasksForm");
+        //エラーメッセージが空じゃなければ、エラーメッセージをセットする
         if((errorMessages != null) && (!errorMessages.isEmpty())) {
-            //エラーメッセージがあった場合はエラーメッセージをセット
             mav.addObject("errorMessages", errorMessages);
-            //エラーメッセージがあった場合は、セッションから編集中のFormを受け取って、セット
-            mav.addObject("editTasksForm", session.getAttribute("editTasks"));
+            mav.addObject("editTasksForm", editContent);
         }
         //エラーメッセージが常に出てきてしまうので、格納後にセッションを破棄
         session.invalidate();
+
 
         //画面遷移先を指定(edit.html)
         mav.setViewName("/edit");
@@ -191,8 +196,8 @@ public class ToDoController {
     /*
      * タスク編集処理
      */
-    @PutMapping("/update/{id}")
-    public ModelAndView updateContent(@PathVariable String id, @ModelAttribute("editTasksForm") @Validated TasksForm tasksForm, BindingResult result) {
+    @PutMapping("/update")
+    public ModelAndView updateContent(@RequestParam(name = "editId", required=false) String id, @ModelAttribute("editTasksForm") @Validated TasksForm tasksForm, BindingResult result) {
         //バリデーション
         List<String> errorMessages = new ArrayList<String>();
         //現在日時を00:00:00:00で取得
@@ -207,23 +212,33 @@ public class ToDoController {
         //入力されたタスク内容を取得
         String content = tasksForm.getContent();
 
-        //タスク内容がブランクの場合
-        if (content.isBlank()) {
-            // エラーメッセージをセット
-            errorMessages.add("・タスクを入力してください");
-        }
-        //タスク期限が過去の場合
-        if ((limitDate != null && limitDate.compareTo(today) < 0)) {
-            // エラーメッセージをセット
-            errorMessages.add("・無効な日付です");
-        }
-        //何らかのエラーがある場合にエラーメッセージをViewに渡して、/editにリダイレクト
-        if(result.hasErrors() || !errorMessages.isEmpty()) {
+        ModelAndView mav = new ModelAndView();
+
+        if ((result.hasErrors()) || (limitDate.compareTo(today) < 0) || (content.isBlank())) {
+            //エラーがあったら、エラーメッセージを格納する
+            //エラーメッセージの取得
+            for (FieldError error : result.getFieldErrors()){
+                String message = error.getDefaultMessage();
+                //取得したエラーメッセージをエラーメッセージのリストに格納
+                errorMessages.add(message);
+            }
+            if (limitDate != null && limitDate.compareTo(today) < 0) {
+                // エラーメッセージをセット
+                errorMessages.add("・無効な日付です");
+            }
+            if (content.isBlank()) {
+                // エラーメッセージをセット
+                errorMessages.add("・タスクを入力してください");
+            }
+
             session.setAttribute("errorMessages", errorMessages);
-            session.setAttribute("editTasks", tasksForm);
+            session.setAttribute("editId", id);
+            int taskId = Integer.parseInt(id);
+            tasksForm.setId(taskId);
+            session.setAttribute("editTasksForm", tasksForm);
 
             //編集画面に遷移
-            return new ModelAndView("redirect:/edit/{id}");
+            return new ModelAndView("redirect:/edit");
         }
 
         // タスクを更新するためTasksServiceのsaveTasksを実行
@@ -234,6 +249,7 @@ public class ToDoController {
 
         tasksForm.setStatus(tasksForm1.getStatus());
         tasksService.saveTasks(tasksForm);
+
         //トップ画面へ戻る
         return new ModelAndView("redirect:/");
     }

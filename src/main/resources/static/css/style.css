@@ -62,6 +62,11 @@ ul {
     border: 0.5px solid red;
 }
 
+.delete:hover {
+    background-color: darkred;
+    border-color: darkred;
+}
+
 .edit-button{
     display:inline-block;
 }
