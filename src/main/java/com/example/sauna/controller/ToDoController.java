@@ -168,6 +168,8 @@ public class ToDoController {
             return new ModelAndView("redirect:/");
         }
 
+        mav.addObject("editTasksForm", tasksForm);
+
         //編集時にsessionに格納したエラーメッセージを取得
         List<String> errorMessages = (List<String>) session.getAttribute("errorMessages");
         //エラーメッセージが空じゃなければ、エラーメッセージをセットする
@@ -178,7 +180,7 @@ public class ToDoController {
         session.invalidate();
 
         //編集する投稿を保管
-        mav.addObject("editTasksForm", tasksForm);
+        //mav.addObject("editTasksForm", tasksForm);
 
         //画面遷移先を指定(edit.html)
         mav.setViewName("/edit");
