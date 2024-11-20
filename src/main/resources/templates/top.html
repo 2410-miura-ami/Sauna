@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
 <head>
   <meta charset="UTF-8">
   <link th:href="@{/css/style.css}" rel="styleSheet">
@@ -15,6 +15,7 @@
 <div class="errorMessages" th:each="errorMessage : ${errorMessages}">
   <p th:text="${errorMessage}"></p>
 </div>
+本日の日付：<span th:text="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}"></span></br>
 <a href="/new">
   <button class="new-button" type="button">新規タスク</button>
 </a>
@@ -62,7 +63,7 @@
 
       <div class="delete-button">
         <form th:method="delete" th:action="@{/delete/{id}(id=${task.id})}" >
-            <input type="submit" value="削除" id="delete" />
+            <input type="submit" value="削除" class="delete" />
         </form>
       </div>
   </div>
