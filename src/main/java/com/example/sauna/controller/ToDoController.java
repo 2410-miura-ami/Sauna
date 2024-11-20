@@ -172,19 +172,20 @@ public class ToDoController {
             return new ModelAndView("redirect:/");
         }
 
+        //編集する投稿を保管
         mav.addObject("editTasksForm", tasksForm);
 
         //編集時にsessionに格納したエラーメッセージを取得
         List<String> errorMessages = (List<String>) session.getAttribute("errorMessages");
+        TasksForm editContent = (TasksForm) session.getAttribute("editTasksForm");
         //エラーメッセージが空じゃなければ、エラーメッセージをセットする
         if((errorMessages != null) && (!errorMessages.isEmpty())) {
             mav.addObject("errorMessages", errorMessages);
+            mav.addObject("editTasksForm", editContent);
         }
         //エラーメッセージが常に出てきてしまうので、格納後にセッションを破棄
         session.invalidate();
 
-        //編集する投稿を保管
-        //mav.addObject("editTasksForm", tasksForm);
 
         //画面遷移先を指定(edit.html)
         mav.setViewName("/edit");
@@ -211,7 +212,9 @@ public class ToDoController {
         //入力されたタスク内容を取得
         String content = tasksForm.getContent();
 
-        if ((result.hasErrors()) || (limitDate.compareTo(today) < 0)|| (content.isBlank())) {
+        ModelAndView mav = new ModelAndView();
+
+        if ((result.hasErrors()) || (limitDate.compareTo(today) < 0) || (content.isBlank())) {
             //エラーがあったら、エラーメッセージを格納する
             //エラーメッセージの取得
             for (FieldError error : result.getFieldErrors()){
@@ -219,7 +222,7 @@ public class ToDoController {
                 //取得したエラーメッセージをエラーメッセージのリストに格納
                 errorMessages.add(message);
             }
-            if (limitDate != null && limitDate.compareTo(today) < 0 ) {
+            if (limitDate != null && limitDate.compareTo(today) < 0) {
                 // エラーメッセージをセット
                 errorMessages.add("・無効な日付です");
             }
@@ -230,6 +233,9 @@ public class ToDoController {
 
             session.setAttribute("errorMessages", errorMessages);
             session.setAttribute("editId", id);
+            int taskId = Integer.parseInt(id);
+            tasksForm.setId(taskId);
+            session.setAttribute("editTasksForm", tasksForm);
 
             //編集画面に遷移
             return new ModelAndView("redirect:/edit");
@@ -243,6 +249,7 @@ public class ToDoController {
 
         tasksForm.setStatus(tasksForm1.getStatus());
         tasksService.saveTasks(tasksForm);
+
         //トップ画面へ戻る
         return new ModelAndView("redirect:/");
     }
