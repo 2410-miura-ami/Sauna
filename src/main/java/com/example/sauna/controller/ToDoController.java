@@ -205,6 +205,8 @@ public class ToDoController {
         //入力されたタスク期限を取得
         Date limitDate = tasksForm.getLimitDate();
 
+        ModelAndView mav = new ModelAndView();
+
         if ((result.hasErrors()) || (limitDate.compareTo(today) < 0)) {
             //エラーがあったら、エラーメッセージを格納する
             //エラーメッセージの取得
@@ -220,6 +222,8 @@ public class ToDoController {
 
             session.setAttribute("errorMessages", errorMessages);
             session.setAttribute("editId", id);
+            session.setAttribute("editTasksForm", tasksForm);
+
 
             //編集画面に遷移
             return new ModelAndView("redirect:/edit");
