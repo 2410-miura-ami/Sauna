@@ -33,9 +33,9 @@
   </form>
 </div>
 <div class="main-contents">
-  タスク内容　ステータス　タスク期限</br>
+  タスク内容&emsp;&emsp;&emsp;ステータス&emsp;&emsp;&emsp;&emsp;&emsp;タスク期限</br>
   <div class="tasks-icon" th:each="task : ${tasks}">
-      <span th:text="${task.content}"/>
+      <div class="content-icon" th:text="${task.content}"></div>
       <div class="status-icon">
         <form th:action="@{/editStatus/{id}(id=${task.id})}" th:method="post">
           <select name="status">
@@ -53,7 +53,6 @@
       <span th:if="${task.limitDate < #dates.createNow()}">
         <span class="over-due" th:text="${#dates.format(task.limitDate, 'yyyy-MM-dd')}"></span>
       </span>
-
       <div class="edit-button">
         <form th:method="get" th:action="@{/edit}" >
           <input type="submit" value="編集" />

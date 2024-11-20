@@ -20,27 +20,29 @@ body {
     font-family: "Arial", sans-serif;
 }
 
+.content-icon{
+    display:inline-block;
+    padding-right: 6em;
+}
+
 .status-icon{
     display:inline-block;
+    padding-right: 2em;
 }
 
 .safe-due {
-    color: yellow;
+    background-color: yellow;
 }
 
 .over-due {
-    color: red;
-}
-
-.delete-button{
-    display:inline-block;
+    background-color: red;
 }
 
 .footer-contents {
 	margin-left: 20px;
 }
 
-.tweet-box {
+.content-box {
     margin: 5px 0px;
 	width: 780px;
 	height: 56px;
