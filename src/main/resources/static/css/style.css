@@ -20,6 +20,12 @@ body {
     font-family: "Arial", sans-serif;
 }
 
+ul {
+    list-style-type: none; /* リストのマーカー（・）を無効化 */
+    padding: 0; /* 左側の余白も消したい場合 */
+    margin: 0; /* 上下の余白を調整 */
+}
+
 .content-icon{
     display:inline-block;
     padding-right: 6em;
@@ -58,4 +64,8 @@ body {
 
 .edit-item{
     display:block;
+}
+
+.update-button {
+    margin:20px 10px 10px 0;
 }
