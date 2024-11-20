@@ -105,21 +105,25 @@ public class ToDoController {
         Date today = calendar.getTime();
         //入力されたタスク期限を取得
         Date limitDate = tasksForm.getLimitDate();
+        //入力されたタスク内容を取得
+        String content = tasksForm.getContent();
 
         //エラーメッセージの準備
-        String errorMessages = "・無効な日付です";
+        List<String> errorMessages = new ArrayList<>();
 
-        //タスク内容にエラーがあり、タスク期限が昨日以前である場合
-        if (result.hasErrors() && (limitDate != null && limitDate.compareTo(today) < 0)) {
+        //タスク内容がブランクの場合
+        if (content.isBlank()) {
             // エラーメッセージをセット
-            model.addAttribute("errorMessages", errorMessages);
-            return new ModelAndView("/new");
-        //タスク内容にエラーがあり、タスク期限が今日以降または空である場合
-        }else if(result.hasErrors() && !(limitDate != null && limitDate.compareTo(today) < 0)){
-            return new ModelAndView("/new");
-        //タスク内容のみにエラーがなく、タスク期限が昨日以前である場合
-        }else if(!result.hasErrors() && (limitDate != null && limitDate.compareTo(today) < 0)){
+            errorMessages.add("・タスクを入力してください");
+        }
+
+        //タスク期限が過去の場合
+        if ((limitDate != null && limitDate.compareTo(today) < 0)) {
             // エラーメッセージをセット
+            errorMessages.add("・無効な日付です");
+        }
+
+        if(result.hasErrors() || !errorMessages.isEmpty()) {
             model.addAttribute("errorMessages", errorMessages);
             return new ModelAndView("/new");
         }

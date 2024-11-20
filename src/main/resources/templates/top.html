@@ -24,7 +24,7 @@
   <form th:method="get">
     期限<input type="date" name="startDate" th:value="${startDate}" />～<input type="date" name="endDate" th:value="${endDate}" />　
     ステータス<select name="status">
-      <option value="" th:selected="${currentStatus == null}">　</option>
+      <option value="" th:selected="${currentStatus == null}">すべて</option>
       <option value="1" th:selected="${currentStatus == 1}">未着手</option>
       <option value="2" th:selected="${currentStatus == 2}">実行中</option>
       <option value="3" th:selected="${currentStatus == 3}">ステイ中</option>
