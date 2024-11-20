@@ -48,16 +48,16 @@ public class TasksService {
         //ステータス・タスク内容入力ありの場合
         List<Tasks> results = null;
         if (status != null && !StringUtils.isBlank(content)) {
-            results = tasksRepository.findByLimitDateBetweenAndStatusAndContentOrderByUpdatedDateDesc(StartDate, EndDate, status, content);
+            results = tasksRepository.findByLimitDateBetweenAndStatusAndContentOrderByLimitDateAsc(StartDate, EndDate, status, content);
             //ステータスのみ入力ありの場合
         } else if (status != null && StringUtils.isBlank(content)) {
-            results = tasksRepository.findByLimitDateBetweenAndStatusOrderByUpdatedDateDesc(StartDate, EndDate, status);
+            results = tasksRepository.findByLimitDateBetweenAndStatusOrderByLimitDateAsc(StartDate, EndDate, status);
             //タスク内容のみ入力ありの場合
         } else if (status == null && !StringUtils.isBlank(content)) {
-            results = tasksRepository.findByLimitDateBetweenAndContentOrderByUpdatedDateDesc(StartDate, EndDate, content);
+            results = tasksRepository.findByLimitDateBetweenAndContentOrderByLimitDateAsc(StartDate, EndDate, content);
             //ステータス・タスク内容入力なしの場合
         } else {
-            results = tasksRepository.findByLimitDateBetweenOrderByUpdatedDateDesc(StartDate, EndDate);
+            results = tasksRepository.findByLimitDateBetweenOrderByLimitDateAsc(StartDate, EndDate);
         }
         List<TasksForm> tasks = setTasksForm(results);
         return tasks;

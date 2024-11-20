@@ -13,6 +13,7 @@ body {
 	height: 100%;
 	width: 80%;
 }
+
 .errorMessages {
     color: red;
     font-size: 16px;
@@ -37,15 +38,11 @@ body {
     background-color: red;
 }
 
-.delete-button{
-    display:inline-block;
-}
-
 .footer-contents {
 	margin-left: 20px;
 }
 
-.tweet-box {
+.content-box {
     margin: 5px 0px;
 	width: 780px;
 	height: 56px;
