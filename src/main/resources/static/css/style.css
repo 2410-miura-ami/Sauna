@@ -56,3 +56,7 @@ body {
 .edit-item{
     display:block;
 }
+
+.update-button {
+    margin:20px 10px 10px 0;
+}
