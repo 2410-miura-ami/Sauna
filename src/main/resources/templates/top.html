@@ -35,7 +35,9 @@
   </form>
 </div>
 <div class="main-contents">
-  タスク内容&emsp;&emsp;&emsp;ステータス&emsp;&emsp;&emsp;&emsp;&emsp;タスク期限</br>
+  <div class="head-content">タスク内容</div>
+  <div class="head-status">ステータス内容</div>
+  <div class="head-limit">タスク期限</div>
   <div class="tasks-icon" th:each="task : ${tasks}">
       <div class="content-icon" th:text="${task.content}"></div>
       <div class="status-icon">

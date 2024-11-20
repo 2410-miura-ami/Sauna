@@ -2,11 +2,15 @@ $(function() {
 	// class='status-change'が設定されたボタンをクリックしたらダイアログを表示する。
 	$('.status-change').on('click', function() {
 		let result = confirm('変更しますか');
-
 		if (result) {
 			return true;
 		} else {
-			return false;
+		    return false;
 		}
+		window.location.href = '/';
 	});
+
+	$('.status-change').on('click', function() {
+    	window.location.href = '/';
+    });
 });

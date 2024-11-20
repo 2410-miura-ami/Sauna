@@ -208,8 +208,10 @@ public class ToDoController {
         Date today = calendar.getTime();
         //入力されたタスク期限を取得
         Date limitDate = tasksForm.getLimitDate();
+        //入力されたタスク内容を取得
+        String content = tasksForm.getContent();
 
-        if ((result.hasErrors()) || (limitDate.compareTo(today) < 0)) {
+        if ((result.hasErrors()) || (limitDate.compareTo(today) < 0)|| (content.isBlank())) {
             //エラーがあったら、エラーメッセージを格納する
             //エラーメッセージの取得
             for (FieldError error : result.getFieldErrors()){
@@ -217,9 +219,13 @@ public class ToDoController {
                 //取得したエラーメッセージをエラーメッセージのリストに格納
                 errorMessages.add(message);
             }
-            if (limitDate != null && limitDate.compareTo(today) < 0) {
+            if (limitDate != null && limitDate.compareTo(today) < 0 ) {
                 // エラーメッセージをセット
                 errorMessages.add("・無効な日付です");
+            }
+            if (content.isBlank()) {
+                // エラーメッセージをセット
+                errorMessages.add("・タスクを入力してください");
             }
 
             session.setAttribute("errorMessages", errorMessages);

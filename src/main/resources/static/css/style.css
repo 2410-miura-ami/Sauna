@@ -26,22 +26,43 @@ ul {
     margin: 0; /* 上下の余白を調整 */
 }
 
+.head-content{
+    width:150px;
+    font-weight: bold;
+    display:inline-block;
+}
+
+.head-status{
+    width:150px;
+    font-weight: bold;
+    display:inline-block;
+
+}
+
+.head-limit{
+    width:150px;
+    font-weight: bold;
+    display:inline-block;
+}
+
 .content-icon{
     display:inline-block;
-    padding-right: 6em;
+    width:150px
 }
 
 .status-icon{
     display:inline-block;
-    padding-right: 2em;
+    width:150px
 }
 
 .safe-due {
     background-color: yellow;
+    width:150px
 }
 
 .over-due {
     background-color: red;
+    width:150px
 }
 
 .footer-contents {
