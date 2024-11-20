@@ -14,12 +14,14 @@
     <div class="errorMessages">
       <div th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></div>
       <div th:if="${#fields.hasErrors('limitDate')}" th:errors="*{limitDate}"></div>
-      <div th:if="${errorMessages != null}">
-        <span th:text="${errorMessages}"></span>
+      <div th:if="${errorMessages != null and !#lists.isEmpty(errorMessages)}">
+        <ul>
+          <li th:each="errorMessage : ${errorMessages}" th:text="${errorMessage}"></li>
+        </ul>
       </div>
     </div>
     <label>タスク内容</label><br/>
-    <textarea class="content-box" th:field="*{content}" size="100" maxlength="200" /></textarea><br/>
+    <textarea class="content-box" th:field="*{content}" maxlength="200"></textarea><br/>
     <label>タスク期限</label><br/>
     <input type="text" name="limitDate" th:value="*{#dates.format(limitDate, 'yyyy-MM-dd')}" pattern="\d{4}-\d{2}-\d{2}" title="タスク期限はYYYY-MM-DD形式で入力してください"/><br/>
     <br/>
