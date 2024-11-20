@@ -107,8 +107,7 @@ public class ToDoController {
         Date limitDate = tasksForm.getLimitDate();
 
         //エラーメッセージの準備
-        List<String> errorMessages = new ArrayList<>();
-        errorMessages.add("無効な日付です");
+        String errorMessages = "・無効な日付です";
 
         //タスク内容にエラーがあり、タスク期限が昨日以前である場合
         if (result.hasErrors() && (limitDate != null && limitDate.compareTo(today) < 0)) {
@@ -136,13 +135,17 @@ public class ToDoController {
     /*
      * タスク編集画面初期表示
      */
-    @GetMapping("/edit/{id}")
-    public ModelAndView editContent(@PathVariable String id, RedirectAttributes redirectAttributes) {
+    @GetMapping("/edit")
+    public ModelAndView editContent(@RequestParam(name = "editId", required=false) String id, RedirectAttributes redirectAttributes) {
         ModelAndView mav = new ModelAndView();
-        //IDのnull,数字チェック
         List<String> errorMessageId = new ArrayList<String>();
+
+        String editId = (String) session.getAttribute("editId");
+        if((editId != null) && (!editId.isEmpty())) {
+            id = editId;
+        }
         //IDのnull,数字チェック
-        if(!id.matches("^[0-9]+$") || (!StringUtils.hasText(id))) {
+        if((id == null) || (!id.matches("^[0-9]+$"))) {
             errorMessageId.add("不正なパラメータです");
             //エラーメッセージを格納して、top画面へ遷移
             redirectAttributes.addFlashAttribute("errorMessages", errorMessageId);
@@ -150,7 +153,7 @@ public class ToDoController {
             return new ModelAndView("redirect:/");
         }
 
-        //idをIntegerに変換
+        //idを数値型に変換
         int taskId = Integer.parseInt(id);
 
         //編集するタスクを取得
@@ -167,15 +170,16 @@ public class ToDoController {
 
         //編集時にsessionに格納したエラーメッセージを取得
         List<String> errorMessages = (List<String>) session.getAttribute("errorMessages");
-        //「エラーメッセージが空じゃなければ、エラーメッセージをセットする。」mav.addObjectすることで画面表示の準備できる
+        //エラーメッセージが空じゃなければ、エラーメッセージをセットする
         if((errorMessages != null) && (!errorMessages.isEmpty())) {
             mav.addObject("errorMessages", errorMessages);
         }
-        //エラーメッセージが常に出てきてしまうので、格納後にセッションを破棄する
+        //エラーメッセージが常に出てきてしまうので、格納後にセッションを破棄
         session.invalidate();
 
         //編集する投稿を保管
         mav.addObject("editTasksForm", tasksForm);
+
         //画面遷移先を指定(edit.html)
         mav.setViewName("/edit");
 
@@ -185,39 +189,45 @@ public class ToDoController {
     /*
      * タスク編集処理
      */
-    @PutMapping("/update/{id}")
-    public ModelAndView updateContent(@PathVariable Integer id, @ModelAttribute("editTasksForm") @Validated TasksForm tasksForm, BindingResult result) {
-        //エラーチェック
-        /*
-        if(result.hasErrors()){
-            ModelAndView modelAndView = new ModelAndView("/edit");
-            return modelAndView;
-        }
-        */
-
+    @PutMapping("/update")
+    public ModelAndView updateContent(@RequestParam(name = "editId", required=false) String id, @ModelAttribute("editTasksForm") @Validated TasksForm tasksForm, BindingResult result) {
         //バリデーション
         List<String> errorMessages = new ArrayList<String>();
+        //現在日時を00:00:00:00で取得
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        Date today = calendar.getTime();
+        //入力されたタスク期限を取得
+        Date limitDate = tasksForm.getLimitDate();
 
-        if (result.hasErrors()) {
+        if ((result.hasErrors()) || (limitDate.compareTo(today) < 0)) {
             //エラーがあったら、エラーメッセージを格納する
-            //BindingResultのgetFieldErrors()により、エラーメッセージの取得
+            //エラーメッセージの取得
             for (FieldError error : result.getFieldErrors()){
                 String message = error.getDefaultMessage();
                 //取得したエラーメッセージをエラーメッセージのリストに格納
                 errorMessages.add(message);
             }
+            if (limitDate != null && limitDate.compareTo(today) < 0) {
+                // エラーメッセージをセット
+                errorMessages.add("・無効な日付です");
+            }
 
-            // セッションに保存（リダイレクトしても値を保存できるようにするため）
             session.setAttribute("errorMessages", errorMessages);
+            session.setAttribute("editId", id);
 
             //編集画面に遷移
-            return new ModelAndView("redirect:/edit/{id}");
+            return new ModelAndView("redirect:/edit");
         }
 
         // タスクを更新するためTasksServiceのsaveTasksを実行
-        tasksForm.setId(id);
+        int taskId = Integer.parseInt(id);
+        tasksForm.setId(taskId);
         //このidのレコードを参照して持ってくる
-        TasksForm tasksForm1 = tasksService.editTasks(id);
+        TasksForm tasksForm1 = tasksService.editTasks(taskId);
 
         tasksForm.setStatus(tasksForm1.getStatus());
         tasksService.saveTasks(tasksForm);

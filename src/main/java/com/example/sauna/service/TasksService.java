@@ -97,16 +97,11 @@ public class TasksService {
         List<Tasks> results = new ArrayList<>();
         results.add((Tasks)tasksRepository.findById(id).orElse(null));
         //DBから取得した値をsetTasksFormメソッドでEntity→Formに詰め直して、Controllerに戻す
-        if (results.isEmpty()) {
+        if (results.get(0) == null) {
             return null;
         }
 
         List<TasksForm> tasks = setTasksForm(results);
-        /*if (tasks.isEmpty()) {
-            return null;
-        } else {
-            return tasks.get(0);
-        }*/
         return tasks.get(0);
     }
 
