@@ -6,6 +6,7 @@
   <script th:src="@{/js/jquery-3.7.1.js}"></script>
   <script th:src="@{/js/jquery-3.7.1.min.js}"></script>
   <script th:src="@{/js/delete.js}"></script>
+  <script th:src="@{/js/status-change.js}"></script>
   <title>TOP</title>
 </head>
 <body>
@@ -45,7 +46,7 @@
             <option value="3" th:selected="${task.status == 3}">ステイ中</option>
             <option value="4" th:selected="${task.status == 4}">完了</option>
           </select>
-          <input type="submit" value="変更" />
+          <input type="submit" value="変更" class="status-change" />
         </form>
       </div>
       <span th:if="${task.limitDate > #dates.createNow()}">

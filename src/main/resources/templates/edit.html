@@ -20,7 +20,7 @@
       <textarea class="content-box" th:field="*{content}" size="20" maxlength="200" /></textarea><br/>
       <label class="edit-item">タスク期限</label>
       <input type="text" th:field="*{limitDate}" /><br/>
-      <input type="submit" value="編集" />
+      <input type="submit" value="編集" class="update-button" />
       <input name="editId" th:value="${editTasksForm.id}"  type="hidden" />
     </div>
   </form>
