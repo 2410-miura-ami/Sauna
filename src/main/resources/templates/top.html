@@ -56,7 +56,7 @@
         <span class="over-due" th:text="${#dates.format(task.limitDate, 'yyyy-MM-dd')}"></span>
       </span>
       <div class="edit-button">
-        <form th:method="get" th:action="@{/edit}" >
+        <form th:method="get" th:action="@{/edit/{id}(id=${task.id})}" >
           <input type="submit" value="編集" />
           <input name="editId" th:value="${task.id}"  type="hidden" />
         </form>

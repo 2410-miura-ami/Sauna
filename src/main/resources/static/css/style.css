@@ -54,8 +54,12 @@ ul {
 	height: 56px;
 }
 
-.delete-button{
+.delete-button {
     display:inline-block;
+}
+
+.delete {
+    border: 0.5px solid red;
 }
 
 .edit-button{

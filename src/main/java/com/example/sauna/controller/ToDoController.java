@@ -122,7 +122,7 @@ public class ToDoController {
             // エラーメッセージをセット
             errorMessages.add("・無効な日付です");
         }
-
+        //何らかのエラーがある場合にエラーメッセージをViewに渡して、/newに遷移
         if(result.hasErrors() || !errorMessages.isEmpty()) {
             model.addAttribute("errorMessages", errorMessages);
             return new ModelAndView("/new");
@@ -139,15 +139,11 @@ public class ToDoController {
     /*
      * タスク編集画面初期表示
      */
-    @GetMapping("/edit")
-    public ModelAndView editContent(@RequestParam(name = "editId", required=false) String id, RedirectAttributes redirectAttributes) {
+    @GetMapping("/edit/{id}")
+    public ModelAndView editContent(@PathVariable String id, RedirectAttributes redirectAttributes) {
         ModelAndView mav = new ModelAndView();
         List<String> errorMessageId = new ArrayList<String>();
 
-        String editId = (String) session.getAttribute("editId");
-        if((editId != null) && (!editId.isEmpty())) {
-            id = editId;
-        }
         //IDのnull,数字チェック
         if((id == null) || (!id.matches("^[0-9]+$"))) {
             errorMessageId.add("不正なパラメータです");
@@ -176,15 +172,15 @@ public class ToDoController {
 
         //編集時にsessionに格納したエラーメッセージを取得
         List<String> errorMessages = (List<String>) session.getAttribute("errorMessages");
-        //エラーメッセージが空じゃなければ、エラーメッセージをセットする
+        //エラーメッセージの有無のチェック
         if((errorMessages != null) && (!errorMessages.isEmpty())) {
+            //エラーメッセージがあった場合はエラーメッセージをセット
             mav.addObject("errorMessages", errorMessages);
+            //エラーメッセージがあった場合は、セッションから編集中のFormを受け取って、セット
+            mav.addObject("editTasksForm", session.getAttribute("editTasks"));
         }
         //エラーメッセージが常に出てきてしまうので、格納後にセッションを破棄
         session.invalidate();
-
-        //編集する投稿を保管
-        //mav.addObject("editTasksForm", tasksForm);
 
         //画面遷移先を指定(edit.html)
         mav.setViewName("/edit");
@@ -195,8 +191,8 @@ public class ToDoController {
     /*
      * タスク編集処理
      */
-    @PutMapping("/update")
-    public ModelAndView updateContent(@RequestParam(name = "editId", required=false) String id, @ModelAttribute("editTasksForm") @Validated TasksForm tasksForm, BindingResult result) {
+    @PutMapping("/update/{id}")
+    public ModelAndView updateContent(@PathVariable String id, @ModelAttribute("editTasksForm") @Validated TasksForm tasksForm, BindingResult result) {
         //バリデーション
         List<String> errorMessages = new ArrayList<String>();
         //現在日時を00:00:00:00で取得
@@ -208,25 +204,26 @@ public class ToDoController {
         Date today = calendar.getTime();
         //入力されたタスク期限を取得
         Date limitDate = tasksForm.getLimitDate();
+        //入力されたタスク内容を取得
+        String content = tasksForm.getContent();
 
-        if ((result.hasErrors()) || (limitDate.compareTo(today) < 0)) {
-            //エラーがあったら、エラーメッセージを格納する
-            //エラーメッセージの取得
-            for (FieldError error : result.getFieldErrors()){
-                String message = error.getDefaultMessage();
-                //取得したエラーメッセージをエラーメッセージのリストに格納
-                errorMessages.add(message);
-            }
-            if (limitDate != null && limitDate.compareTo(today) < 0) {
-                // エラーメッセージをセット
-                errorMessages.add("・無効な日付です");
-            }
-
+        //タスク内容がブランクの場合
+        if (content.isBlank()) {
+            // エラーメッセージをセット
+            errorMessages.add("・タスクを入力してください");
+        }
+        //タスク期限が過去の場合
+        if ((limitDate != null && limitDate.compareTo(today) < 0)) {
+            // エラーメッセージをセット
+            errorMessages.add("・無効な日付です");
+        }
+        //何らかのエラーがある場合にエラーメッセージをViewに渡して、/editにリダイレクト
+        if(result.hasErrors() || !errorMessages.isEmpty()) {
             session.setAttribute("errorMessages", errorMessages);
-            session.setAttribute("editId", id);
+            session.setAttribute("editTasks", tasksForm);
 
             //編集画面に遷移
-            return new ModelAndView("redirect:/edit");
+            return new ModelAndView("redirect:/edit/{id}");
         }
 
         // タスクを更新するためTasksServiceのsaveTasksを実行

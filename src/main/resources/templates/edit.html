@@ -10,7 +10,7 @@
   <h2>タスク編集</h2>
 </div>
 <div class="main-contents">
-  <form th:method="put" th:action="@{/update}" th:object="${editTasksForm}">
+  <form th:method="put" th:action="@{/update/{id}(id=${editTasksForm.id})}" th:object="${editTasksForm}">
     <div class="errorMessages" th:each="errorMessage : ${errorMessages}">
       <p th:text="${errorMessage}"></p>
     </div>
